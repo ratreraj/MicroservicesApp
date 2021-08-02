@@ -1,0 +1,64 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44396
+        }
+      ],
+      "Key": "products",
+      "FileCacheOptions": {
+        "TtlSeconds": 60,
+        "Region": "products"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "MyAuthKey"
+      },
+      "RouteClaimsRequirement": {
+        "Roles": "User"
+      },
+      "UpstreamPathTemplate": "/product",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/category",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44396
+        }
+      ],
+      "UpstreamPathTemplate": "/category",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/authentication",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44373
+        }
+      ],
+      "Key": "users",
+      "UpstreamPathTemplate": "/authentication",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "products",
+        "users"
+      ],
+      "UpstreamPathTemplate": "/products-users"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:44345"
+  }
+}

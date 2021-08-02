@@ -1,0 +1,77 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 1205
+        }
+      ],
+      "Key": "products",
+      "FileCacheOptions": {
+        "TtlSeconds": 60,
+        "Region": "products"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "MyAuthKey"
+      },
+      "RouteClaimsRequirement": {
+        "Roles": "User"
+      },
+      "UpstreamPathTemplate": "/product",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/category",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 1205
+        }
+      ],
+      "UpstreamPathTemplate": "/category",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/authentication",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 1210
+        }
+      ],
+      "Key": "users",
+      "UpstreamPathTemplate": "/authentication",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 1215
+        }
+      ],
+      "Key": "orders",
+      "UpstreamPathTemplate": "/order",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "products",
+        "users"
+      ],
+      "UpstreamPathTemplate": "/products-users"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:1200"
+  }
+}

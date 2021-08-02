@@ -1,0 +1,38 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service-deploy
+spec:
+  selector:
+    matchLabels:
+      app: catalog-service-pod
+  replicas: 1   
+  template:
+    metadata:
+      labels:
+        app: catalog-service-pod
+    spec:
+      imagePullSecrets:
+      - name: acr-secret
+      containers:
+      - name: catalog-service-container
+        image: dntrepo.azurecr.io/catalogmicroservice:v1
+        imagePullPolicy: Always
+        resources:
+        env:
+           - name: DB_CONNECTION
+             value: "Server=tcp:dntcatalog.database.windows.net,1433;Initial Catalog=catalogdb;Persist Security Info=False;User ID=sysadmin;Password=dnt@12345678;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service-service
+spec:
+  selector:
+    app: catalog-service-pod
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
